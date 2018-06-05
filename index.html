@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js test</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				font-family: Monospace;
+				background-color: #f0f0f0;
+				margin: 0px;
+				overflow: hidden;;
+			}
+		</style>
+	</head>
+	<body>
+
+		<script src="three.js"></script>
+		<!-- <script src="TrackballControls.js"></script> -->
+
+
+		<script>
+			var container;
+			var camera, controls, scene, renderer;
+			var mouse = new THREE.Vector2(), INTERSECTED;
+			var radius = 500, theta = 0;
+			var frustumSize = 1000;
+
+			init();
+			animate();
+
+			function init() {
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+				var aspect = window.innerWidth / window.innerHeight;
+				camera = new THREE.OrthographicCamera( frustumSize * aspect / - 12, frustumSize * aspect / 12, frustumSize / 12, frustumSize / - 12, 1, 1000 );
+				scene = new THREE.Scene();
+
+				// controls = new THREE.TrackballControls( camera );
+				// controls.rotateSpeed = 1.0;
+				// controls.zoomSpeed = 1.2;
+				// controls.panSpeed = 0.8;
+				// controls.noZoom = false;
+				// controls.noPan = false;
+				// controls.staticMoving = true;
+				// controls.dynamicDampingFactor = 0.3;
+				// controls.keys = [ 65, 83, 68 ];
+				// controls.addEventListener( 'change', render );
+			
+				var light2 = new THREE.AmbientLight(0xffffff, 0.5);
+	      scene.add(light2);
+
+	      //var light1 = new THREE.PointLight(0xff0066, .5);
+	      //scene.add(light1);
+
+				var light = new THREE.DirectionalLight( 0xffffff, 1.1 );
+				light.position.set( 1, 1, 1 ).normalize();
+				scene.add( light );
+
+				var curve = new THREE.SplineCurve3([
+	        new THREE.Vector3(-15, 0, 10),
+	        new THREE.Vector3(-5, 5, 5),
+	        // new THREE.Vector3(0, 0, 0),
+	        new THREE.Vector3(5, -5, 5),
+	        new THREE.Vector3(15, 0, 10)
+	      ]);
+	      var geometry = new THREE.TubeGeometry(curve, 20, 2, 8, false);
+
+				var count = 175;
+	      var scale = 75;
+
+				for ( var i = 0; i < count; i ++ ) {
+	        var material = new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff});
+	        var r = Math.random() * 2.0 * Math.PI;
+	        var z = (Math.random() * 2.0) - 1.0;
+	        var zScale = Math.sqrt(1.0 - z * z) * scale;
+	        var mesh = new THREE.Mesh(geometry, material, render);
+	        mesh.position.set(
+	          Math.cos(r) * zScale,
+	          Math.sin(r) * zScale,
+	          z * scale
+	        );
+	        mesh.rotation.set(Math.random(), Math.random(), Math.random());
+	        scene.add(mesh);
+	      }
+
+				renderer = new THREE.WebGLRenderer({ antialias: false });
+				renderer.setClearColor( 0xf0f0f0 );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.sortObjects = false;
+				container.appendChild(renderer.domElement);
+				// stats = new Stats();
+				// container.appendChild( stats.dom );
+				window.addEventListener( 'resize', onWindowResize, false );
+
+				render();
+			}
+
+			function onWindowResize() {
+				var aspect = window.innerWidth / window.innerHeight;
+				camera.left   = - frustumSize * aspect / 12;
+				camera.right  =   frustumSize * aspect / 12;
+				camera.top    =   frustumSize / 12;
+				camera.bottom = - frustumSize / 12;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				controls.handleResize();
+			}
+
+			function animate() {
+				requestAnimationFrame( animate );
+				render();
+				controls.update();
+				// stats.update();
+			}
+
+			function render() {
+				theta += 0.1;
+				camera.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
+				camera.position.y = radius * Math.sin( THREE.Math.degToRad( theta ) );
+				camera.position.z = radius * Math.cos( THREE.Math.degToRad( theta ) );
+				camera.lookAt( scene.position );
+				camera.updateMatrixWorld();
+				renderer.render( scene, camera );
+			}
+
+		</script>
+
+	</body>
+</html>
