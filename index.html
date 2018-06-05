@@ -17,8 +17,6 @@
 
 		<script src="three.js"></script>
 		<!-- <script src="TrackballControls.js"></script> -->
-
-
 		<script>
 			var container;
 			var camera, controls, scene, renderer;
@@ -48,41 +46,41 @@
 				// controls.addEventListener( 'change', render );
 			
 				var light2 = new THREE.AmbientLight(0xffffff, 0.5);
-	      scene.add(light2);
+	      		scene.add(light2);
 
-	      //var light1 = new THREE.PointLight(0xff0066, .5);
-	      //scene.add(light1);
+				//var light1 = new THREE.PointLight(0xff0066, .5);
+				//scene.add(light1);
 
 				var light = new THREE.DirectionalLight( 0xffffff, 1.1 );
 				light.position.set( 1, 1, 1 ).normalize();
 				scene.add( light );
 
 				var curve = new THREE.SplineCurve3([
-	        new THREE.Vector3(-15, 0, 10),
-	        new THREE.Vector3(-5, 5, 5),
-	        // new THREE.Vector3(0, 0, 0),
-	        new THREE.Vector3(5, -5, 5),
-	        new THREE.Vector3(15, 0, 10)
-	      ]);
-	      var geometry = new THREE.TubeGeometry(curve, 20, 2, 8, false);
-
+					new THREE.Vector3(-15, 0, 10),
+					new THREE.Vector3(-5, 5, 5),
+					// new THREE.Vector3(0, 0, 0),
+					new THREE.Vector3(5, -5, 5),
+					new THREE.Vector3(15, 0, 10)
+	      		]);
+			  
+				var geometry = new THREE.TubeGeometry(curve, 20, 2, 8, false);
 				var count = 175;
-	      var scale = 75;
+				var scale = 75;
 
 				for ( var i = 0; i < count; i ++ ) {
-	        var material = new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff});
-	        var r = Math.random() * 2.0 * Math.PI;
-	        var z = (Math.random() * 2.0) - 1.0;
-	        var zScale = Math.sqrt(1.0 - z * z) * scale;
-	        var mesh = new THREE.Mesh(geometry, material, render);
-	        mesh.position.set(
-	          Math.cos(r) * zScale,
-	          Math.sin(r) * zScale,
-	          z * scale
-	        );
-	        mesh.rotation.set(Math.random(), Math.random(), Math.random());
-	        scene.add(mesh);
-	      }
+					var material = new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff});
+					var r = Math.random() * 2.0 * Math.PI;
+					var z = (Math.random() * 2.0) - 1.0;
+					var zScale = Math.sqrt(1.0 - z * z) * scale;
+					var mesh = new THREE.Mesh(geometry, material, render);
+					mesh.position.set(
+					Math.cos(r) * zScale,
+					Math.sin(r) * zScale,
+					z * scale
+					);
+					mesh.rotation.set(Math.random(), Math.random(), Math.random());
+					scene.add(mesh);
+				}
 
 				renderer = new THREE.WebGLRenderer({ antialias: false });
 				renderer.setClearColor( 0xf0f0f0 );
@@ -126,6 +124,5 @@
 			}
 
 		</script>
-
 	</body>
 </html>
